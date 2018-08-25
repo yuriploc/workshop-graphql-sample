@@ -1,8 +1,10 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import getDoseType from '../queries/getDoseType';
+import { graphql, compose } from 'react-apollo';
+import getDoseTypes from '../queries/getDoseTypes';
+import addVaccine from '../queries/addVaccine';
+import getAllVaccines from '../queries/getAllVaccines';
 
-class AddVacine extends React.Component {
+class AddVaccine extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +13,7 @@ class AddVacine extends React.Component {
       doseType: 'unique'
     };
     this.onChange = this.onChange.bind(this);
+    this.onHandleSubmit = this.onHandleSubmit.bind(this);
   }
 
   onChange(event) {
@@ -23,15 +26,31 @@ class AddVacine extends React.Component {
       case 'description':
         state = { description: value };
         break;
-      case 'doseType':
+      case 'doseTypes':
         state = { doseType: value };
         break;
     }
     this.setState(state);
   }
 
+  onHandleSubmit(event) {
+    event.preventDefault();
+    const { title, description, doseType } = this.state;
+    const { addVaccine } = this.props;
+    addVaccine({
+      variables: {
+        title,
+        description,
+        doseType
+      },
+      refetchQueries: [{ query: getAllVaccines }]
+    }).then(() => {
+      this.props.history.push('/');
+    });
+  }
+
   renderForm() {
-    const { doseType } = this.props;
+    const { doseTypes } = this.props;
     return (
       <form onSubmit={this.onHandleSubmit}>
         <label>
@@ -56,8 +75,8 @@ class AddVacine extends React.Component {
         <br />
         <label>
           Dose Type:
-          <select name="doseType" onChange={this.onChange}>
-            {doseType.__type.enumValues.map((dt, idx) => (
+          <select name="doseTypes" onChange={this.onChange}>
+            {doseTypes.__type.enumValues.map((dt, idx) => (
               <option key={idx}>{dt.name}</option>
             ))}
           </select>
@@ -73,9 +92,12 @@ class AddVacine extends React.Component {
   }
 
   render() {
-    const { doseType } = this.props;
-    return doseType.loading ? this.renderLoading() : this.renderForm();
+    const { doseTypes } = this.props;
+    return doseTypes.loading ? this.renderLoading() : this.renderForm();
   }
 }
 
-export default graphql(getDoseType, { name: 'doseType' })(AddVacine);
+export default compose(
+  graphql(addVaccine, { name: 'addVaccine' }),
+  graphql(getDoseTypes, { name: 'doseTypes' })
+)(AddVaccine);

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const getDoseType = gql`
+const getDoseTypes = gql`
   query {
     __type(name: "DoseType") {
       enumValues {
@@ -10,4 +10,4 @@ const getDoseType = gql`
   }
 `;
 
-export default getDoseType;
+export default getDoseTypes;
