@@ -14,7 +14,7 @@ class Home extends React.PureComponent {
         <div>List:</div>
         <ul>
           {vaccines.getAllVaccines.map((v, idx) => (
-            <li key={v.idx}>
+            <li key={idx}>
               {v.title} - {v.description} - {v.doseType}
             </li>
           ))}
