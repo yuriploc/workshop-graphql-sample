@@ -26,7 +26,7 @@ const rootQuery = `
 
 const mutation = `
   type Mutation {
-    addVaccine(title: String!, description: String!): Vaccine
+    addVaccine(title: String!, description: String!, doseType: DoseType!): Vaccine
   }
 `;
 
