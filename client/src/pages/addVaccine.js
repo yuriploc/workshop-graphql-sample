@@ -1,7 +1,8 @@
 import React from 'react';
+import { graphql } from 'react-apollo';
+import getDoseType from '../queries/getDoseType';
 
 class AddVacine extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +13,7 @@ class AddVacine extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange (event) {
+  onChange(event) {
     const { name, value } = event.target;
     let state = {};
     switch (name) {
@@ -20,35 +21,51 @@ class AddVacine extends React.Component {
         state = { title: value };
         break;
       case 'description':
-        state = { description: value }
+        state = { description: value };
         break;
       case 'doseType':
-        state = { doseType: value }
+        state = { doseType: value };
         break;
     }
     this.setState(state);
   }
 
   renderForm() {
-
+    const { doseType } = this.props;
     return (
       <form onSubmit={this.onHandleSubmit}>
-          <label>Title:
-        <input type="text" name="title" onChange={this.onChange} value={this.state.title} />
-          </label>
-          <label>Description:
-        <input type="text" name="description" onChange={this.onChange} value={this.state.description} />
-          </label>
-          <label>Autor:
-        <input type="text" name="author" onChange={this.onChangeAuthor} value={this.state.description} />
-          </label>
-          <label>
-            <select name="doseType" onChange={this.onChange}>
-            </select>
-          </label>
-          <input type="submit" value="Save"/>
+        <label>
+          Title:
+          <input
+            type="text"
+            name="title"
+            onChange={this.onChange}
+            value={this.state.title}
+          />
+        </label>
+        <br />
+        <label>
+          Description:
+          <input
+            type="text"
+            name="description"
+            onChange={this.onChange}
+            value={this.state.description}
+          />
+        </label>
+        <br />
+        <label>
+          Dose Type:
+          <select name="doseType" onChange={this.onChange}>
+            {doseType.__type.enumValues.map((dt, idx) => (
+              <option key={idx}>{dt.name}</option>
+            ))}
+          </select>
+        </label>
+        <br />
+        <input type="submit" value="Save" />
       </form>
-      );
+    );
   }
 
   renderLoading() {
@@ -56,8 +73,9 @@ class AddVacine extends React.Component {
   }
 
   render() {
-    return this.renderForm();
+    const { doseType } = this.props;
+    return doseType.loading ? this.renderLoading() : this.renderForm();
   }
 }
 
-export default AddVacine;
+export default graphql(getDoseType, { name: 'doseType' })(AddVacine);

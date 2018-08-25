@@ -5,6 +5,7 @@ const getAllVaccines = gql`
     getAllVaccines {
       title
       description
+      doseType
     }
   }
 `;
