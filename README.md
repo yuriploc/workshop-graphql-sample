@@ -1,6 +1,11 @@
-Etapas para subir o projeto!!!
+## To run the project
 
-Execute os comandos abaixo
+Execute:
 - `docker-compose up`
-- `yarn install || npm install`
-- `yarn start || npm start`
+- `npm install`
+- `npm start`
+
+## TODO:
+
+* lib DataLoader
+* Apollo Server

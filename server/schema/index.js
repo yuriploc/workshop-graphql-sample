@@ -20,7 +20,9 @@ const types = `
 
 const rootQuery = `
   type Query {
-    getVaccineById(id: ID!): Vaccine
+    getVaccineById(id: ID!): Vaccine,
+    getVaccineByTitle(title: String!): [Vaccine],
+    getAllVaccines: [Vaccine]
   }
 `;
 
