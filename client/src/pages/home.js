@@ -1,11 +1,12 @@
 import React from 'react';
+import { graphql } from 'react-apollo';
+import getAllVaccines from '../queries/getAllVaccines';
 
-class Home extends React.PureComponent{
+class Home extends React.PureComponent {
   render() {
-    return (
-      <div>Home!!!</div>
-    )
+    console.log(this.props);
+    return <div>Home!!!</div>;
   }
-};
+}
 
-export default Home;
+export default graphql(getAllVaccines, { name: 'vaccines' })(Home);

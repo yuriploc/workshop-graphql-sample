@@ -7,5 +7,8 @@ Execute:
 
 ## TODO:
 
+* `getVaccineById`: pass 1, "1", "test" as `id`
+* docker+mongo
 * lib DataLoader
 * Apollo Server
+* Tests
