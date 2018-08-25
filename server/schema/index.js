@@ -1,11 +1,21 @@
 import { makeExecutableSchema } from 'graphql-tools';
+import resolvers from './resolvers';
 
-const type = `
-type Vaccine {
-  id: ID!,
-  title: String,!
-  description: String!
-}
+const types = `
+  type Vaccine {
+    id: ID!,
+    title: String!,
+    description: String!,
+    doseType: DoseType!
+  }
+
+  enum DoseType {
+    unique,
+    two,
+    three,
+    four,
+    five
+  }
 `;
 
 const rootQuery = `
@@ -14,15 +24,22 @@ const rootQuery = `
   }
 `;
 
+const mutation = `
+  type Mutation {
+    addVaccine(title: String!, description: String!): Vaccine
+  }
+`;
+
 const schemaDef = `
   schema {
-    query: Query
+    query: Query,
+    mutation: Mutation
   }
 `;
 
 const schema = makeExecutableSchema({
-  typeDefs: [type, rootQuery, schemaDef],
-  resolvers: {}
+  typeDefs: [types, rootQuery, mutation, schemaDef],
+  resolvers
 });
 
 export default schema;
